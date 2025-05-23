@@ -1,13 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body, html, #root {
+  font-family: 'Poppins', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    font-family: Arial, sans-serif;
   }
   
   thead {
-    background-color: #007bff;
-    color: white;
+    background-color: #ffffff;
   }
   
   th, td {
