@@ -1,84 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Dialog } from 'primereact/dialog';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Button } from 'primereact/button';
-import { Tag } from 'primereact/tag';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import './PqrsPendiente.css';
+import {
+  Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TablePagination, TableRow, Button, Dialog,
+  DialogTitle, DialogContent, DialogActions, TextField, Chip, Snackbar, Alert
+} from '@mui/material';
 
 export default function PqrsPendiente() {
   const [datosPQRS, setDatosPQRS] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [cargando, setCargando] = useState(true);
-  const [lazyState, setLazyState] = useState({
-    first: 0,
-    rows: 10,
-    page: 1
-  });
-
-  // Estados para el modal
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [mostrarDialogo, setMostrarDialogo] = useState(false);
   const [mensajeRespuesta, setMensajeRespuesta] = useState('');
   const [pqrsSeleccionado, setPqrsSeleccionado] = useState(null);
+  const [snackbarAbierto, setSnackbarAbierto] = useState(false);
+
+  const usuarioLogeado = JSON.parse(localStorage.getItem('usuario'));
 
   useEffect(() => {
     cargarDatos();
-  }, [lazyState]);
+  }, [page, rowsPerPage]);
 
-  // Función para traer datos de usuario por id
-  const obtenerUsuarioPorId = async (id) => {
-    try {
-      const res = await fetch(`https://pqrsfastapi-production.up.railway.app/usuarios/${id}`);
-      if (!res.ok) throw new Error('Error al obtener usuario');
-      const usuario = await res.json();
-      return usuario;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+  const calcularAntiguedad = (fecha) => {
+    const ahora = new Date();
+    const creado = new Date(fecha);
+    const diffHoras = Math.floor((ahora - creado) / (1000 * 60 * 60));
+
+    if (diffHoras >= 48) return 'rojo';
+    if (diffHoras >= 24) return 'naranja';
+    return 'gris';
   };
 
   const cargarDatos = async () => {
-    setCargando(true);
     try {
-      const respuesta = await fetch('https://pqrsfastapi-production.up.railway.app/pqrs/');
-      if (!respuesta.ok) throw new Error('Error al obtener los datos');
-      const datos = await respuesta.json();
+      const res = await fetch('https://pqrsfastapi-production.up.railway.app/pqrs/');
+      if (!res.ok) throw new Error('Error al obtener PQRS pendientes');
+      const datos = await res.json();
 
-      // Obtener página actual
-      const inicio = lazyState.first;
-      const fin = inicio + lazyState.rows;
-      const datosPaginados = datos.slice(inicio, fin);
+      const pendientes = datos.filter(p => p.estado !== 'Cerrada');
 
-      // Extraer ids únicos de usuario de la página actual
-      const idsUsuarios = [...new Set(datosPaginados.map(pqrs => pqrs.usuario_id))];
+      const start = page * rowsPerPage;
+      const end = start + rowsPerPage;
+      const datosPaginados = pendientes.slice(start, end);
 
-      // Traer los usuarios para esos ids (paralelo con Promise.all)
-      const usuarios = await Promise.all(idsUsuarios.map(id => obtenerUsuarioPorId(id)));
+      const usuarios = await Promise.all(
+        datosPaginados.map(p => fetch(`https://pqrsfastapi-production.up.railway.app/usuarios/${p.usuario_id}`)
+          .then(r => r.json())
+          .catch(() => ({ nombre: 'Desconocido' })))
+      );
 
-      // Crear un mapa de usuario_id a nombre para fácil acceso
-      const mapaUsuarios = {};
-      usuarios.forEach(u => {
-        if (u) mapaUsuarios[u.id] = u.nombre; // ajusta si el campo se llama diferente
-      });
-
-      // Agregar nombreUsuario a cada PQRS
-      const datosConNombre = datosPaginados.map(pqrs => ({
-        ...pqrs,
-        nombreUsuario: mapaUsuarios[pqrs.usuario_id] || 'No disponible'
+      const datosConNombre = datosPaginados.map((p, index) => ({
+        ...p,
+        nombreUsuario: usuarios[index].nombre || 'Desconocido',
+        colorTiempo: calcularAntiguedad(p.creado_en)
       }));
 
       setDatosPQRS(datosConNombre);
-      setTotalRecords(datos.length);
+      setTotalRecords(pendientes.length);
     } catch (error) {
       console.error(error);
-    } finally {
-      setCargando(false);
     }
   };
 
-  const abrirModal = (pqrs) => {
+  const abrirDialogo = (pqrs) => {
     setPqrsSeleccionado(pqrs);
     setMensajeRespuesta('');
     setMostrarDialogo(true);
@@ -93,81 +81,153 @@ export default function PqrsPendiente() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           pqrs_id: pqrsSeleccionado.id,
-          admin_id: 'admin_1',
+          admin_id: usuarioLogeado?.id,
           mensaje: mensajeRespuesta
         })
       });
 
-      if (!respuesta.ok) throw new Error('Error al enviar la respuesta');
+      if (!respuesta.ok) {
+        const textoError = await respuesta.text();
+        throw new Error(`Error al enviar la respuesta: ${respuesta.status} - ${textoError}`);
+      }
+
+      const actualizarEstado = await fetch(`https://pqrsfastapi-production.up.railway.app/pqrs/${pqrsSeleccionado.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...pqrsSeleccionado,
+          estado: 'Cerrada'
+        })
+      });
+
+      if (!actualizarEstado.ok) {
+        const textoError = await actualizarEstado.text();
+        throw new Error(`Error al actualizar estado: ${actualizarEstado.status} - ${textoError}`);
+      }
+
       setMostrarDialogo(false);
+      setMensajeRespuesta('');
+      setPqrsSeleccionado(null);
+
+      // Mostrar notificación de éxito
+      setSnackbarAbierto(true);
+
+      // Esperar antes de recargar datos
+      setTimeout(() => {
+        cargarDatos();
+      }, 300);
+
     } catch (error) {
       console.error(error);
-      alert('Ocurrió un error al enviar la respuesta.');
+      alert(error.message);
     }
   };
 
-  const iconoDocumento = (rowData) => {
-    return rowData.documento_url ? (
-      <a href={rowData.documento_url} target="_blank" rel="noopener noreferrer">
-        <i className="pi pi-file" style={{ fontSize: '1.2rem' }}></i>
-      </a>
-    ) : null;
-  };
-
-  const botonResponder = (rowData) => (
-    <Button icon="pi pi-reply" label="Responder" className="p-button-sm" onClick={() => abrirModal(rowData)} />
-  );
-
-  const etiquetaEstado = (rowData) => (
-    <Tag value={rowData.estado} severity={rowData.estado === 'cerrada' ? 'success' : 'warning'} />
-  );
-
   return (
-    <div className="card">
-      <h2>Registros PQRS</h2>
-      <DataTable
-        value={datosPQRS}
-        paginator
-        lazy
-        first={lazyState.first}
-        rows={lazyState.rows}
-        totalRecords={totalRecords}
-        onPage={(e) => setLazyState(e)}
-        loading={cargando}
-        tableStyle={{ minWidth: '75rem' }}
-      >
-        <Column field="nombreUsuario" header="Nombre" />
-        <Column field="titulo" header="Título" />
-        <Column field="tipo" header="Tipo" />
-        <Column field="descripcion" header="Descripción" />
-        <Column field="estado" header="Estado" body={etiquetaEstado} />
-        <Column field="creado_en" header="Fecha" body={(rowData) => new Date(rowData.creado_en).toLocaleString()} />
-        <Column header="Documento" body={iconoDocumento} />
-        <Column header="Acciones" body={botonResponder} />
-      </DataTable>
+    <div className="fondo-pagina">
+      <div style={{ minHeight: '100vh', paddingTop: '20px', paddingBottom: '40px' }}>
+        <Paper sx={{ width: '98vw', maxWidth: '98vw', margin: '40px auto', padding: '40px 20px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', overflowX: 'auto' }}>
+          <TableContainer>
+            <Table stickyHeader sx={{ minWidth: 900 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Título</TableCell>
+                  <TableCell>Tipo</TableCell>
+                  <TableCell>Descripción</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell>Fecha</TableCell>
+                  <TableCell>Documento</TableCell>
+                  <TableCell>Acción</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {datosPQRS.map((row) => (
+                  <TableRow hover key={row.id}>
+                    <TableCell>{row.nombreUsuario}</TableCell>
+                    <TableCell>{row.titulo}</TableCell>
+                    <TableCell>{row.tipo}</TableCell>
+                    <TableCell>{row.descripcion}</TableCell>
+                    <TableCell>
+                      <Chip
+                        icon={row.estado === 'Cerrada' ? <CheckCircleIcon /> : row.colorTiempo === 'rojo' ? <AccessTimeIcon /> : <HourglassEmptyIcon />}
+                        label={row.estado}
+                        color={
+                          row.estado === 'Cerrada'
+                            ? 'success'
+                            : row.colorTiempo === 'rojo'
+                              ? 'error'
+                              : row.colorTiempo === 'naranja'
+                                ? 'warning'
+                                : 'default'
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>{new Date(row.creado_en).toLocaleString()}</TableCell>
+                    <TableCell>
+                      {row.documento_url && (
+                        <a href={row.documento_url} target="_blank" rel="noopener noreferrer">📄</a>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {row.estado && row.estado.toLowerCase() !== 'cerrada' && (
+                        <Button variant="contained" size="small" onClick={() => abrirDialogo(row)}>
+                          Responder
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-      <Dialog
-        header="Responder PQRS"
-        visible={mostrarDialogo}
-        style={{ width: '40vw' }}
-        modal
-        onHide={() => setMostrarDialogo(false)}
-        footer={
-          <div>
-            <Button label="Cancelar" icon="pi pi-times" onClick={() => setMostrarDialogo(false)} className="p-button-text" />
-            <Button label="Enviar" icon="pi pi-check" onClick={enviarRespuesta} autoFocus />
-          </div>
-        }
+          <TablePagination
+            component="div"
+            count={totalRecords}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(e, newPage) => setPage(newPage)}
+            onRowsPerPageChange={(e) => {
+              setRowsPerPage(parseInt(e.target.value, 10));
+              setPage(0);
+            }}
+          />
+
+          <Dialog open={mostrarDialogo} onClose={() => setMostrarDialogo(false)} fullWidth maxWidth="sm">
+            <DialogTitle>Responder PQRS</DialogTitle>
+            <DialogContent>
+              <p><strong>Para:</strong> {pqrsSeleccionado?.nombreUsuario}</p>
+              <TextField
+                label="Mensaje"
+                multiline
+                rows={5}
+                fullWidth
+                variant="outlined"
+                value={mensajeRespuesta}
+                onChange={(e) => setMensajeRespuesta(e.target.value)}
+                placeholder="Escribe tu respuesta aquí..."
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setMostrarDialogo(false)}>Cancelar</Button>
+              <Button variant="contained" onClick={enviarRespuesta}>Enviar</Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      </div>
+
+      {/* Snackbar de éxito */}
+      <Snackbar
+        open={snackbarAbierto}
+        autoHideDuration={4000}
+        onClose={() => setSnackbarAbierto(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <p><strong>Para:</strong> {pqrsSeleccionado?.nombreUsuario}</p>
-        <InputTextarea
-          value={mensajeRespuesta}
-          onChange={(e) => setMensajeRespuesta(e.target.value)}
-          rows={5}
-          cols={60}
-          placeholder="Escribe tu respuesta aquí..."
-        />
-      </Dialog>
+        <Alert onClose={() => setSnackbarAbierto(false)} severity="success" variant="filled" sx={{ width: '100%' }}>
+          Respuesta enviada con éxito.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

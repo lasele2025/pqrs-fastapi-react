@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import './PanelUsuario.css';
 
 export default function Dashboard() {
-  // Aquí podrías obtener el nombre del usuario desde props, contexto, etc.
-  const username = "Royer"; // Ejemplo: inyecta el nombre de usuario real
+  const username = "Royer";
 
   return (
-    <div className="dashboard">
+    <div className="panelusuario">
       <header className="dashboard-header">
         <h2>Bienvenido, {username}</h2>
       </header>

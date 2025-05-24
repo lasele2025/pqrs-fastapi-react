@@ -1,37 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-body, html, #root {
-  font-family: 'Poppins', sans-serif;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+.fondo-pagina {
+  min-height: 100vh;
+  background-image: url('/FotoPanelPQRSpendientes.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 20px;
+  padding-bottom: 40px;
 }
 
+.MuiPaper-root {
+  background-color: rgb(168, 0, 0);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px;
+  margin: 40px auto;
+  width: 98vw;              /* usa casi todo el ancho de la ventana (viewport) */
+  max-width: 98vw;          /* sin límite para que ocupe todo */
+  overflow-x: auto;         /* scroll horizontal si hace falta */
+  display: block;
+}
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  thead {
-    background-color: #ffffff;
-  }
-  
-  th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  p {
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    color: #555;
-  }
-  
+.MuiTable-root {
+  width: 100%;              /* tabla toma todo el ancho del Paper */
+  min-width: 900px;         /* para que no se achique demasiado en pantallas pequeñas */
+}
+
+.MuiTableCell-root {
+  white-space: normal !important;
+  word-wrap: break-word;
+  max-width: 250px;
+}

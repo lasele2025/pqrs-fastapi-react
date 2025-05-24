@@ -6,6 +6,7 @@ export default function Dashboard() {
   const username = "Royer"; // Aquí puedes reemplazarlo con una variable real en el futuro
 
   return (
+    <div className="panel-admin">
     <div className="dashboard">
       <header className="dashboard-header">
         <h2>Bienvenido, {username}</h2>
@@ -36,6 +37,7 @@ export default function Dashboard() {
           <p>Cerrar sesión</p>
         </Link>
       </div>
+    </div>
     </div>
   );
 }
