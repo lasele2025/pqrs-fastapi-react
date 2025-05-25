@@ -15,7 +15,7 @@ export default function Dashboard() {
           <img src="/public/crear.png" alt="Crear PQRS" />
           <p>Crear PQRS</p>
         </Link>
-        <Link to="/ConsultarPQRS" className="dashboard-card">
+        <Link to="/PqrsUsuario" className="dashboard-card">
           <img src="/public/consultante.png" alt="Consulta de Estado PQRS" />
           <p>Consulta de estado</p>
         </Link>

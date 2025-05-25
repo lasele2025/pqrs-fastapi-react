@@ -1,0 +1,126 @@
+/* Fuente base */
+  .Fondo {
+    background-image: url("/FotoPanelLogin.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Contenedor principal */
+  .formulario-restablecer {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Título */
+  .titulo {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #111827;
+  }
+  
+  /* Subtítulo */
+  .subtitulo {
+    font-size: 1rem;
+    color: #6b7280;
+  }
+  
+  /* Etiquetas */
+  .etiqueta {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 4px;
+    display: block;
+  }
+  
+  /* Input */
+  .entrada {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.3s ease;
+  }
+  
+  .entrada:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  }
+  
+  /* Botón */
+  .boton {
+    width: 100%;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+  }
+  
+  .boton:hover {
+    background-color: #4f46e5;
+  }
+  
+  /* Mensaje */
+  .mensaje {
+    text-align: center;
+    color: #10b981;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* Link de registro */
+  .registro {
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 20px;
+  }
+  .inicio {
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 0px;
+  }
+  .inicio a {
+    color: #6366f1;
+    font-weight: 500;
+    text-decoration: none;
+    
+  }
+
+  .inicio a:hover {
+    text-decoration: underline;
+  }
+  
+  .registro a {
+    color: #6366f1;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .registro a:hover {
+    text-decoration: underline;
+  }
+  .fotollave {
+    height: 20px;
+  }

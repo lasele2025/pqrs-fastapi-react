@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css';
+import './CrearUsuario.css'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -41,12 +41,11 @@ const Login = () => {
     <div className="login-container">
       <div className="login-box">
         <div className="left-section">
-          <h1 className="institution-name">Instituto Tecnologico de La sele</h1>
-          <img src="/LogoColegio.png" alt="Atención al cliente" className="support-image" />
+          <img src="/LogoCole.png" alt="Atención al cliente" className="support-image" />
         </div>
 
         <div className="right-section">
-          <h1 className="welcome">Bienvenido a <strong>PQRS</strong></h1>
+          <h1 className="welcome">Bienvenido al sistema <strong>PQRS</strong></h1>
           <p className="register-text">
             ¿No tienes cuenta? <Link to="/CrearUsuario">Regístrate</Link>
           </p>
@@ -74,7 +73,10 @@ const Login = () => {
 
             {error && <p className="error">{error}</p>}
 
-            <button type="submit">Iniciar sesión</button>
+            <button  className="BotoRegistro"type="submit">Iniciar sesión</button>
+            <Link to="/RestablecerContra" className="botonOlvideContraseña">
+  ¿Olvidó la contraseña?
+</Link>
           </form>
         </div>
       </div>

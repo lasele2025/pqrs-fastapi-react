@@ -1,32 +1,80 @@
+/* Estilo general de la página */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  height: 100%;
+  overflow-y: auto;
+}
+
 .fondo-pagina {
+  padding: 20px;
   min-height: 100vh;
-  background-image: url('/FotoPanelPQRSpendientes.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding-top: 20px;
-  padding-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Ajustes para Material UI Table */
+.MuiTableCell-root {
+  font-size: 14px;
+  word-break: break-word;
 }
 
 .MuiPaper-root {
-  background-color: rgb(168, 0, 0);
-  border-radius: 12px;
+  border-radius: 12px !important;
+  overflow-x: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
-  margin: 40px auto;
-  width: 98vw;              /* usa casi todo el ancho de la ventana (viewport) */
-  max-width: 98vw;          /* sin límite para que ocupe todo */
-  overflow-x: auto;         /* scroll horizontal si hace falta */
-  display: block;
 }
 
-.MuiTable-root {
-  width: 100%;              /* tabla toma todo el ancho del Paper */
-  min-width: 900px;         /* para que no se achique demasiado en pantallas pequeñas */
+.MuiButton-root {
+  text-transform: none;
+  font-weight: 500;
 }
 
-.MuiTableCell-root {
-  white-space: normal !important;
-  word-wrap: break-word;
-  max-width: 250px;
+/* Chip de estado */
+.MuiChip-root {
+  font-size: 0.8rem;
+}
+
+/* Responsive para móviles */
+@media screen and (max-width: 768px) {
+  .MuiTableCell-root {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .MuiButton-root {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .MuiChip-root {
+    font-size: 0.7rem;
+  }
+
+  .fondo-pagina {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .MuiTableCell-root {
+    font-size: 12px;
+  }
+
+  .MuiChip-label {
+    font-size: 0.65rem !important;
+  }
+
+  .MuiButton-root {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
 }

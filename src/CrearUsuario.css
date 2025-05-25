@@ -1,126 +1,185 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-body, html, #root {
-  font-family: 'Poppins', sans-serif;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+* {
+  box-sizing: border-box;
 }
 
-.crear-usuario-container {
-    display: flex;
-    min-height: 100vh;
-    background: linear-gradient(to right, #007bff, #60a9ff);
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-  }
-  
-  .form-section {
-    background-color: white;
-    padding: 40px;
-    border-radius: 20px;
-    width: 60%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-  
-  .form-section h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-  }
-  
-  .form-section p {
-    font-size: 14px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .form-section form {
-    display: flex;
+
+.login-container {
+  background-image: url("/FotoPanelLogin.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  background-color: white;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.left-section {
+  flex: 1;
+  height: 100;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+  padding: 40px;
+}
+
+
+.support-image {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  width: 180%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+.support-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+.right-section {
+  flex: 1;
+  padding: 40px;
+  background: linear-gradient(to top,  #0060a5, #5baaff);
+  height: 600px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.welcome {
+  margin-top: 80px;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.register-text {
+  margin-top: 10px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.register-text a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: -10px;
+  color: #ffffff;
+}
+.error {
+  color: red;
+  margin-top: -20px;
+  font-weight: bold;
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+form button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+form button:hover {
+  background-color: #005ec4;
+}
+
+/* ...Todo tu CSS anterior... */
+
+@media (max-width: 768px) {
+  .login-box {
     flex-direction: column;
+    width: 95%;
+    margin: 20px;
   }
-  
-  .form-section label {
-    margin-top: 10px;
-    margin-bottom: 5px;
+
+  .left-section, .right-section {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .support-image {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .institution-name {
+    font-size: 18px;
+  }
+
+  .welcome, .login-title {
+    font-size: 20px;
+  }
+
+  form input, form button {
     font-size: 14px;
   }
-  
-  .form-section input,
-  .form-section select {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-  
-  .document-row,
-  .document-row {
-    display: flex;
-    gap: 10px; /* reduce espacio entre los dos */
-  }
-  
-  .document-row > div:first-child {
-    margin-right: 35px; /* un pequeño margen para separar */
-  }
-  
-  .document-row > div:last-child {
-    margin-left: 0; /* para asegurarte que no tenga margen que lo aleje */
-  }
-  
-  .name-row {
-    display: flex;
-    gap: 90px; /* más espacio entre las cajas */
-  }
-  
-  .checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 4px; /* menos espacio horizontal entre checkbox y texto */
-  }
-  
-  .checkbox-row input[type="checkbox"] {
-    margin: 0;
-    padding: 0;
-    width: 16px;  /* tamaño estándar, ajusta si quieres */
-    height: 16px;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #005ec4;
-  }
-  
-  .image-section {
-    width: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .image-section img {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 10px;
-  }
-  input[name="correo"],
-  input[name="contrasena"] {
-    max-width: 300px;  /* ancho máximo */
-    width: 100%;       /* para que sea responsivo dentro del max */
-    box-sizing: border-box;  /* para que padding y borde no aumenten el ancho */
-  }
-  
+}
+.botonOlvideContraseña {
+  margin-left: 135px;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.texto-regreso-login {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.enlace-login {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+

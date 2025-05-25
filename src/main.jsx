@@ -9,6 +9,8 @@ import CrearUsuario from './CrearUsuario.jsx';
 import ConsultarPQRS from './ConsultarPQRS.jsx';
 import PqrsPendiente from './PqrsPendiente.jsx';
 import UsuariosRegistrados from './UsuariosRegistrados.jsx';
+import RestablecerContra from './RestablecerContra.jsx';
+import PqrsUsuario from './PqrsUsuario.jsx';
 
 
 
@@ -24,6 +26,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/ConsultarPQRS" element={<ConsultarPQRS />} />
         <Route path="/PqrsPendiente" element={<PqrsPendiente />} />
         <Route path="/UsuariosRegistrados" element={<UsuariosRegistrados />} />
+        <Route path="/RestablecerContra" element={<RestablecerContra />} />
+        <Route path="/PqrsUsuario" element={<PqrsUsuario />} />
         <Route path="/Login" element={<Login />} />
       </Routes>
     </BrowserRouter>

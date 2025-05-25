@@ -1,18 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+* {
+  box-sizing: border-box;
+}
 
 body, html, #root {
   font-family: 'Poppins', sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden; /* Cambia a solo ocultar scroll horizontal */
 }
 
-
-
+.margin-bottom{
+  margin-top: 20px;
+}
 
 .login-container {
-  background: linear-gradient(to right, #007bff, #60a9ff);
+  background-image: url("/FotoPanelLogin.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+
+  width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -26,59 +36,56 @@ body, html, #root {
   display: flex;
   border-radius: 20px;
   overflow: hidden;
+  flex-direction: row;
+  flex-wrap: wrap;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .left-section {
   flex: 1;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
   padding: 40px;
-  text-align: center;
 }
 
-.institution-name {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
 
 .support-image {
-  width: 280px;
-  margin-top: 5%;
-  margin-left: -10%;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  width: 180%;
+  max-width: 450px;
+  margin: 0 auto;
 }
-
+.support-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
 .right-section {
   flex: 1;
   padding: 40px;
-  background-color: white;
+  background: linear-gradient(to top, #0060a5, #5baaff);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}npm run dev
 
-.welcome {
-  font-size: 22px;
-  color: #555;
-}
 
-.register-text {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.register-text a {
-  color: #007bff;
-  text-decoration: none;
-}
 
 .login-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: #ffffff;
 }
 .error {
   color: red;
-  margin-top: 10px;
+  margin-top: 0px;
   font-weight: bold;
 }
 
@@ -89,9 +96,9 @@ form {
 }
 
 form label {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 14px;
-  color: #333;
+  color: #ffffff;
 }
 
 form input {
@@ -116,3 +123,44 @@ form button {
 form button:hover {
   background-color: #005ec4;
 }
+
+/* ...Todo tu CSS anterior... */
+
+@media (max-width: 768px) {
+  .login-box {
+    flex-direction: column;
+    width: 95%;
+    margin: 20px;
+  }
+
+  .left-section, .right-section {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .support-image {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .institution-name {
+    font-size: 18px;
+  }
+
+  .welcome, .login-title {
+    font-size: 20px;
+  }
+
+  form input, form button {
+    font-size: 14px;
+  }
+}
+.botonOlvideContraseña {
+  margin-left: 120px;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+
