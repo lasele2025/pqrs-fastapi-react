@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './CrearUsuario.css'
+import { supabase } from './supabaseClient';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,35 +11,45 @@ const Login = () => {
 
   const manejarLogin = async (e) => {
     e.preventDefault();
-  
+    setError('');
+
+    // Intentar login con Supabase Auth
+    const { data, error: errorSupabase } = await supabase.auth.signInWithPassword({
+      email,
+      password: contraseña
+    });
+
+    if (errorSupabase) {
+      setError('Correo o contraseña incorrectos');
+      return;
+    }
+
+    // Obtener los datos del perfil (usuario) desde tu tabla de backend si es necesario
     try {
-      const respuesta = await fetch('https://pqrsfastapi-production.up.railway.app/usuarios/');
+      const respuesta = await fetch(`https://pqrsfastapi-production.up.railway.app/usuarios/`);
       const usuarios = await respuesta.json();
-  
-      const usuarioEncontrado = usuarios.find(
-        (u) => u.email === email && u.password === contraseña
-      );
-  
+
+      const usuarioEncontrado = usuarios.find(u => u.email === email);
+
       if (usuarioEncontrado) {
         localStorage.setItem('usuario', JSON.stringify(usuarioEncontrado));
-  
+
         if (usuarioEncontrado.tipo_usuario === 'admin') {
           navigate('/PanelAdmin');
         } else {
           navigate('/PanelUsuario');
         }
       } else {
-        setError('Correo o contraseña incorrectos');
+        setError('Usuario no encontrado en el sistema');
       }
     } catch (err) {
-      console.error('Error al intentar iniciar sesión:', err);
-      setError('Ocurrió un error en el servidor');
+      console.error('Error al buscar el usuario:', err);
+      setError('Ocurrió un error al buscar el usuario');
     }
   };
-  
 
   return (
-    <div className="login-container">
+    <div className="contenedorlogin">
       <div className="login-box">
         <div className="left-section">
           <img src="/LogoCole.png" alt="Atención al cliente" className="support-image" />
@@ -73,10 +84,10 @@ const Login = () => {
 
             {error && <p className="error">{error}</p>}
 
-            <button  className="BotoRegistro"type="submit">Iniciar sesión</button>
+            <button className="BotoRegistro" type="submit">Iniciar sesión</button>
             <Link to="/RestablecerContra" className="botonOlvideContraseña">
-  ¿Olvidó la contraseña?
-</Link>
+              ¿Olvidó la contraseña?
+            </Link>
           </form>
         </div>
       </div>

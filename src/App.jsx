@@ -4,6 +4,7 @@ import UsuariosRegistrados from './UsuariosRegistrados';
 import 'primereact/resources/themes/lara-light-blue/theme.css';  // o cualquier otro tema
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+
 function App() {
   return (
     <div>

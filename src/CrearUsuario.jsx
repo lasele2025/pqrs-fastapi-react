@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from "./supabaseClient.js"; 
 import './CrearUsuario.css';
 
 const CrearUsuario = () => {
@@ -10,22 +11,17 @@ const CrearUsuario = () => {
   const [confirmarPassword, setConfirmarPassword] = useState('');
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [error, setError] = useState('');
+  const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
 
-  const esCorreoValido = (correo) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(correo);
-  };
-
-  const esNombreValido = (nombre) => {
-    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
-    return regex.test(nombre);
-  };
+  const esCorreoValido = (correo) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+  const esNombreValido = (nombre) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre);
 
   const manejarRegistro = async (e) => {
     e.preventDefault();
+    setError('');
+    setMensaje('');
 
-    // Validaciones
     if (!esNombreValido(nombre)) {
       setError('El nombre solo debe contener letras y espacios');
       return;
@@ -41,28 +37,29 @@ const CrearUsuario = () => {
       return;
     }
 
-    const nuevoUsuario = {
+
+// Registro en Supabase con verificación
+console.log('Registrando con:', { email, password, nombre, tipo_usuario: tipoPersona });
+
+const { data, error: errorSupabase } = await supabase.auth.signUp({
+  email,
+  password,
+  options: {
+    data: {
       nombre,
-      email,
-      password,
       tipo_usuario: tipoPersona
-    };
-
-    try {
-      const response = await fetch('https://pqrsfastapi-production.up.railway.app/usuarios/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevoUsuario)
-      });
-
-      if (response.ok) {
-        navigate('/Login');
-      } else {
-        setError('Error al registrar. Intenta de nuevo.');
-      }
-    } catch {
-      setError('Error de conexión');
     }
+  }
+});
+
+
+
+    if (errorSupabase) {
+      setError(errorSupabase.message);
+      return;
+    }
+
+    setMensaje('Te hemos enviado un correo para confirmar tu cuenta.');
   };
 
   return (
@@ -76,15 +73,14 @@ const CrearUsuario = () => {
           <h2 className="login-title">Registro</h2>
 
           <form onSubmit={manejarRegistro}>
-          <label>Tipo de persona</label>
-<select value={tipoPersona} onChange={(e) => setTipoPersona(e.target.value)} required>
-  <option value="">Selecciona una opción</option>
-  <option value="Profesor o empleado">Profesor o empleado</option>
-  <option value="Padre de familia">Padre de familia</option>
-  <option value="Estudiante">Estudiante</option>
-  <option value="Otro">Otro</option>
-</select>
-
+            <label>Tipo de persona</label>
+            <select value={tipoPersona} onChange={(e) => setTipoPersona(e.target.value)} required>
+              <option value="">Selecciona una opción</option>
+              <option value="Profesor o empleado">Profesor o empleado</option>
+              <option value="Padre de familia">Padre de familia</option>
+              <option value="Estudiante">Estudiante</option>
+              <option value="Otro">Otro</option>
+            </select>
 
             <label>Nombre completo</label>
             <input
@@ -106,7 +102,7 @@ const CrearUsuario = () => {
 
             <label>Contraseña</label>
             <input
-              type={mostrarPassword ? "text" : "password"}
+              type={mostrarPassword ? 'text' : 'password'}
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -115,7 +111,7 @@ const CrearUsuario = () => {
 
             <label>Confirmar contraseña</label>
             <input
-              type={mostrarPassword ? "text" : "password"}
+              type={mostrarPassword ? 'text' : 'password'}
               placeholder="Confirmar contraseña"
               value={confirmarPassword}
               onChange={(e) => setConfirmarPassword(e.target.value)}
@@ -135,6 +131,7 @@ const CrearUsuario = () => {
             </div>
 
             {error && <p className="error">{error}</p>}
+            {mensaje && <p className="mensaje-exito">{mensaje}</p>}
 
             <button type="submit">Registrarse</button>
           </form>
@@ -145,3 +142,4 @@ const CrearUsuario = () => {
 };
 
 export default CrearUsuario;
+
