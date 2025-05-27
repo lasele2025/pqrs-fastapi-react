@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './PanelAdmin.css';
 
 export default function Dashboard() {
-  const username = "Royer";
+  const username = "";
 
   return (
     <div className="panel-admin">
@@ -16,9 +16,9 @@ export default function Dashboard() {
             <img src="/public/pendiente.png" alt="Solicitudes pendientes de PQRS" />
             <p>Solicitudes pendientes de PQRS</p>
           </Link>
-          <Link to="/ConsultarPQRS" className="dashboard-card">
-            <img src="/public/cerrada.png" alt="Solicitudes cerradas de PQRS" />
-            <p>Solicitudes cerradas de PQRS</p>
+          <Link to="/PqrsAtendidas" className="dashboard-card">
+            <img src="/public/cerrada.png" alt="Solicitudes atendidas de PQRS" />
+            <p>Solicitudes atendidas de PQRS</p>
           </Link>
           <Link to="/UsuariosRegistrados" className="dashboard-card">
             <img src="/usuario.png" alt="Usuarios" />

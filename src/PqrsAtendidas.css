@@ -1,0 +1,11 @@
+.MuiPaper-root {
+    background-color: #fff;
+  }
+  
+  .MuiTableCell-root {
+    font-size: 14px;
+  }
+  
+  .MuiChip-root {
+    font-weight: bold;
+  }

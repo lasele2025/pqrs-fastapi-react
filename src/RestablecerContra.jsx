@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { supabase } from './supabaseClient';
 import './RestablecerContra.css';
 
 export default function RestablecerContrasena() {
@@ -9,20 +10,12 @@ export default function RestablecerContrasena() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://tu-api.com/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'http://localhost:5173/Contra', // <- Esta debe ser la ruta correcta
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        setMensaje('Se ha enviado un enlace de restablecimiento al correo.');
-      } else {
-        setMensaje(data.error || 'Ocurrió un error.');
-      }
+      setMensaje('Se ha enviado un enlace de restablecimiento al correo.');
     } catch (error) {
-      setMensaje('Error de conexión con el servidor.');
+      setMensaje('Error al enviar el enlace de restablecimiento.');
     }
   };
 

@@ -41,7 +41,7 @@ export default function PqrsPendiente() {
       if (!res.ok) throw new Error('Error al obtener PQRS');
       const datos = await res.json();
 
-      const pendientes = datos.filter(p => p.estado !== 'Cerrada');
+      const pendientes = datos.filter(p => p.estado !== 'cerrado');
       const start = page * rowsPerPage;
       const end = start + rowsPerPage;
       const datosPaginados = pendientes.slice(start, end);
@@ -111,55 +111,73 @@ export default function PqrsPendiente() {
       <TableContainer sx={{ maxHeight: 500 }}>
 
           <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>Título</TableCell>
-                <TableCell sx={{ minWidth: 120, whiteSpace: 'normal' }}>Tipo</TableCell>
+          <TableHead>
+  <TableRow>
+    <TableCell>Título</TableCell>
+    <TableCell sx={{ minWidth: 120, whiteSpace: 'normal' }}>Tipo</TableCell>
+    <TableCell>Descripción</TableCell>
+    <TableCell align="center" sx={{ minWidth: 120, whiteSpace: 'normal' }}>Usuario</TableCell>
+    <TableCell>Estado</TableCell>
+    <TableCell>Fecha</TableCell>
+    <TableCell>Archivo</TableCell> {/* NUEVA COLUMNA */}
+    <TableCell>Acción</TableCell>
+  </TableRow>
+</TableHead>
+<TableBody>
+  {datosPQRS.map((row) => (
+    <TableRow hover key={row.id}>
+      <TableCell>{row.titulo}</TableCell>
+      <TableCell sx={{ minWidth: 120, whiteSpace: 'normal' }}>{row.tipo}</TableCell>
+      <TableCell>{row.descripcion}</TableCell>
+      <TableCell align="center">
+        <Tooltip title={row.nombreUsuario} arrow>
+          <PersonOutlineIcon />
+        </Tooltip>
+      </TableCell>
+      <TableCell>
+        {row.estado === 'cerrado' ? (
+          <Chip icon={<CheckCircleIcon />} label="Cerrado" color="success" />
+        ) : row.colorTiempo === 'rojo' ? (
+          <Chip icon={<AccessTimeIcon />} label="Pendiente" color="error" />
+        ) : row.colorTiempo === 'naranja' ? (
+          <Chip icon={<AccessTimeIcon />} label="Pendiente" color="warning" />
+        ) : (
+          <Chip icon={<HourglassEmptyIcon />} label="Pendiente" color="default" />
+        )}
+      </TableCell>
+      <TableCell>{new Date(row.creado_en).toLocaleString()}</TableCell>
+      <TableCell>
+        {row.archivo_url ? (
+          <Button
+  variant="outlined"
+  size="small"
+  onClick={() => {
+    const win = window.open(row.archivo_url, '_blank');
+    if (win) {
+      win.focus();
+    } else {
+      alert('Por favor permite las ventanas emergentes (pop-ups) en tu navegador.');
+    }
+  }}
+>
+  Ver PDF
+</Button>
 
-                <TableCell>Descripción</TableCell>
+        ) : (
+          <span>Sin archivo</span>
+        )}
+      </TableCell>
+      <TableCell>
+        {row.estado !== 'cerrado' && (
+          <Button variant="contained" size="small" onClick={() => abrirDialogo(row)}>
+            Responder
+          </Button>
+        )}
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
 
-                <TableCell align="center" sx={{ minWidth: 120, whiteSpace: 'normal' }}>Usuario</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Fecha</TableCell>
-                <TableCell>Acción</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {datosPQRS.map((row) => (
-                <TableRow hover key={row.id}>
-                  <TableCell>{row.titulo}</TableCell>
-                  <TableCell sx={{ minWidth: 120, whiteSpace: 'normal' }}>{row.tipo}</TableCell>
-
-                  <TableCell>{row.descripcion}</TableCell>
-                  <TableCell align="center">
-                    <Tooltip title={row.nombreUsuario} arrow>
-                      <PersonOutlineIcon />
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>
-  {row.estado === 'cerrado' ? (
-    <Chip icon={<CheckCircleIcon />} label="Cerrado" color="success" />
-  ) : row.colorTiempo === 'rojo' ? (
-    <Chip icon={<AccessTimeIcon />} label="Pendiente" color="error" />
-  ) : row.colorTiempo === 'naranja' ? (
-    <Chip icon={<AccessTimeIcon />} label="Pendiente" color="warning" />
-  ) : (
-    <Chip icon={<HourglassEmptyIcon />} label="Pendiente" color="default" />
-  )}
-</TableCell>
-
-                  <TableCell>{new Date(row.creado_en).toLocaleString()}</TableCell>
-                  <TableCell>
-  {row.estado !== 'cerrado' && (
-    <Button variant="contained" size="small" onClick={() => abrirDialogo(row)}>
-      Responder
-    </Button>
-  )}
-</TableCell>
-
-                </TableRow>
-              ))}
-            </TableBody>
           </Table>
         </TableContainer>
 

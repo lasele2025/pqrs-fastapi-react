@@ -6,6 +6,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import './PqrsUsuario.css';
 
 export default function PqrsUsuario() {
   const [pqrsUsuario, setPqrsUsuario] = useState([]);
@@ -38,7 +39,19 @@ export default function PqrsUsuario() {
   };
 
   return (
-    <Box sx={{ padding: 3, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
+    <Box
+  sx={{
+    padding: 3,
+    backgroundImage: 'url("/FotoPanelAdmin.jpg")',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    minHeight: '100vh'
+  }}
+>
+  {/* tu contenido */}
+
+
       <Paper sx={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: 3, borderRadius: 2, boxShadow: 3 }}>
         <TableContainer sx={{ maxHeight: 500 }}>
           <Table stickyHeader>
