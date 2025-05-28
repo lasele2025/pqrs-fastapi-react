@@ -51,7 +51,7 @@ export default function RestablecerContrasena() {
       ¿No tienes cuenta? <a href="/CrearUsuario">Regístrate</a>
     </p>
     <p className="inicio">
-      ¿Ya tienes cuenta? <a href="/Login">Inicia sesion</a>
+      ¿Ya tienes cuenta? <a href="https://pqrs-fastapi-react.vercel.app/">Inicia sesion</a>
     </p>
   </form>
 </div>
