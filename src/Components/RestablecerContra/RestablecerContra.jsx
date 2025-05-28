@@ -12,7 +12,7 @@ export default function RestablecerContrasena() {
 
     try {
       await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:5173/Contra', // <- Esta debe ser la ruta correcta
+        redirectTo: 'https://pqrs-fastapi-react.vercel.app/Contra', // <- Esta debe ser la ruta correcta
       });
       setMensaje('Se ha enviado un enlace de restablecimiento al correo.');
     } catch (error) {
