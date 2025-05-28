@@ -8,25 +8,35 @@ import {
 import './PqrsAtendidas.css';
 
 export default function ConsultaCerradasPQRS() {
-  const [datosPQRS, setDatosPQRS] = useState([]);
+  const [cerradasTotales, setCerradasTotales] = useState([]); // todas las PQRS cerradas
+  const [datosPQRS, setDatosPQRS] = useState([]); // paginadas con nombre
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // Cargar todas las PQRS cerradas solo una vez
   useEffect(() => {
-    cargarDatos();
-  }, [page, rowsPerPage]);
+    const cargarDatos = async () => {
+      try {
+        const res = await fetch('https://pqrsfastapi-production.up.railway.app/pqrs/');
+        if (!res.ok) throw new Error('Error al obtener PQRS');
+        const datos = await res.json();
+        const cerrados = datos.filter(p => (p.estado || '').toLowerCase() === 'cerrado');
+        setCerradasTotales(cerrados);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const cargarDatos = async () => {
-    try {
-      const res = await fetch('https://pqrsfastapi-production.up.railway.app/pqrs/');
-      if (!res.ok) throw new Error('Error al obtener PQRS');
-      const datos = await res.json();
-  
-      const cerrados = datos.filter(p => p.estado.toLowerCase() === 'cerrado');
+    cargarDatos();
+  }, []);
+
+  // Recalcular los datos paginados cada vez que cambia la página o cantidad
+  useEffect(() => {
+    const cargarPagina = async () => {
       const start = page * rowsPerPage;
       const end = start + rowsPerPage;
-      const datosPaginados = cerrados.slice(start, end);
-  
+      const datosPaginados = cerradasTotales.slice(start, end);
+
       const usuarios = await Promise.all(
         datosPaginados.map(p =>
           fetch(`https://pqrsfastapi-production.up.railway.app/usuarios/${p.usuario_id}`)
@@ -34,18 +44,17 @@ export default function ConsultaCerradasPQRS() {
             .catch(() => ({ nombre: 'Desconocido' }))
         )
       );
-  
+
       const datosConNombre = datosPaginados.map((p, index) => ({
         ...p,
         nombreUsuario: usuarios[index].nombre || 'Desconocido'
       }));
-  
+
       setDatosPQRS(datosConNombre);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
+    };
+
+    cargarPagina();
+  }, [page, rowsPerPage, cerradasTotales]);
 
   return (
     <Box sx={{ padding: 3, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
@@ -85,7 +94,7 @@ export default function ConsultaCerradasPQRS() {
 
         <TablePagination
           component="div"
-          count={datosPQRS.length}
+          count={cerradasTotales.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(e, newPage) => setPage(newPage)}

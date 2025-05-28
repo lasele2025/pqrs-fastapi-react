@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { supabase } from './supabaseClient';
+import { supabase } from "../../supabaseClient";
+
 import './RestablecerContra.css';
 
 export default function RestablecerContrasena() {

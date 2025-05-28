@@ -3,6 +3,17 @@
   box-sizing: border-box;
 }
 
+.texto-redireccion {
+  color: white;
+  text-align: center;
+  margin-bottom: -15px;
+}
+
+.texto-redireccion a {
+  color: #00ffff;
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 .login-container {
   background-image: url("/FotoPanelLogin.jpg");
@@ -83,6 +94,12 @@
   color: #000000;
   text-decoration: none;
 }
+.mensaje-exito {
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 
 .login-title {
   font-size: 24px;

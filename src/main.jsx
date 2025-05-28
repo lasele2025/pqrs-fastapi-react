@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './Login.jsx'; 
-import PanelUsuario from './PanelUsuario.jsx';
-import PanelAdmin from './PanelAdmin.jsx';
-import RegistroPQRS from './RegistroPQRS.jsx';
-import CrearUsuario from './CrearUsuario.jsx';
-import ConsultarPQRS from './ConsultarPQRS.jsx';
-import PqrsPendiente from './PqrsPendiente.jsx';
-import PqrsAtendidas from './PqrsAtendidas.jsx';
-import UsuariosRegistrados from './UsuariosRegistrados.jsx';
-import RestablecerContra from './RestablecerContra.jsx';
-import PqrsUsuario from './PqrsUsuario.jsx';
-import Contra from './Contra.jsx';
+import Login from './Components/Login/Login.jsx'; 
+import PanelUsuario from './Components/panelUsuario/PanelUsuario.jsx';
+import PanelAdmin from './Components/panelAdmin/PanelAdmin.jsx';
+import RegistroPQRS from './Components/RegistroPQRS/RegistroPQRS.jsx';
+import CrearUsuario from './Components/crearUsuario/CrearUsuario.jsx';
+import ConsultarPQRS from './Components/ConsultarPQRS/ConsultarPQRS.jsx';
+import PqrsPendiente from './Components/pqrsPendiente/PqrsPendiente.jsx';
+import PqrsAtendidas from './Components/pqrsAtendidas/PqrsAtendidas.jsx';
+import UsuariosRegistrados from './Components/UsuariosRegistrados/UsuariosRegistrados.jsx';
+import RestablecerContra from './Components/RestablecerContra/RestablecerContra.jsx';
+import PqrsUsuario from './Components/pqrsUsuario/PqrsUsuario.jsx';
+import Contra from './Components/RestablecerContra/Contra.jsx';
 
 
 

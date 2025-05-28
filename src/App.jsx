@@ -1,6 +1,6 @@
 import React from 'react';
-import PqrsPendiente from './PqrsPendiente'; // corrige el path si es necesario
-import UsuariosRegistrados from './UsuariosRegistrados';
+import PqrsPendiente from './Components/pqrsPendiente/PqrsPendiente'; // corrige el path si es necesario
+import UsuariosRegistrados from './Components/UsuariosRegistrados/UsuariosRegistrados';
 import 'primereact/resources/themes/lara-light-blue/theme.css';  // o cualquier otro tema
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';

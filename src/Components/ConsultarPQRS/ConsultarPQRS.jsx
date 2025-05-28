@@ -1,7 +1,8 @@
 // src/ConsultaPQRS.jsx
 import React from 'react';
 import './ConsultarPQRS.css';
-import imagenSoporte from './assets/FotoLogin.png';
+import imagenSoporte from "../../assets/FotoLogin.png";
+
 
 const ConsultaPQRS = () => {
   return (

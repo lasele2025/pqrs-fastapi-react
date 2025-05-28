@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from "./supabaseClient.js"; 
+import { supabase } from "../../supabaseClient.js"; 
+import { Link } from 'react-router-dom';
 import './CrearUsuario.css';
 
 const CrearUsuario = () => {
@@ -21,46 +22,75 @@ const CrearUsuario = () => {
     e.preventDefault();
     setError('');
     setMensaje('');
-
+  
     if (!esNombreValido(nombre)) {
       setError('El nombre solo debe contener letras y espacios');
       return;
     }
-
+  
     if (!esCorreoValido(email)) {
       setError('El correo electrónico no es válido');
       return;
     }
-
+  
     if (password !== confirmarPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
-
-
-// Registro en Supabase con verificación
-console.log('Registrando con:', { email, password, nombre, tipo_usuario: tipoPersona });
-
-const { data, error: errorSupabase } = await supabase.auth.signUp({
-  email,
-  password,
-  options: {
-    data: {
-      nombre,
-      tipo_usuario: tipoPersona
-    }
-  }
-});
-
-
-
+  
+    console.log('Registrando con:', { email, password, nombre, tipo_usuario: tipoPersona });
+  
+    // 1. Registrar en Supabase Auth
+    const { data, error: errorSupabase } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          nombre,
+          tipo_usuario: tipoPersona
+        }
+      }
+    });
+  
     if (errorSupabase) {
+      console.error("Error en Supabase Auth:", errorSupabase.message);
       setError(errorSupabase.message);
       return;
     }
+  
+    // 2. Registrar en el backend (si se requiere)
+// 2. Registrar en el backend (FastAPI)
+try {
+  const response = await fetch("https://pqrsfastapi-production.up.railway.app/usuarios/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      nombre,
+      password,  // <---- 🔥 este campo faltaba
+      tipo_usuario: tipoPersona
+    })
+  });
 
-    setMensaje('Te hemos enviado un correo para confirmar tu cuenta.');
+  if (!response.ok) {
+    const texto = await response.text();
+    console.warn("Respuesta del backend no OK pero con cuerpo:", texto);
+    // Si ya registró correctamente, no mostramos error al usuario
+    // throw new Error("No se pudo registrar en el backend");
+  }
+  {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+
+  setMensaje('Registro exitoso. Revisa tu correo electrónico y confirma tu cuenta para poder iniciar sesión.');
+  
+} catch (err) {
+  console.error("Error en el registro del backend:", err.message);
+  setError("Error al registrar en el sistema");
+}
+
   };
+  
 
   return (
     <div className="login-container">
@@ -71,6 +101,10 @@ const { data, error: errorSupabase } = await supabase.auth.signUp({
 
         <div className="right-section">
           <h2 className="login-title">Registro</h2>
+<p className="texto-redireccion">
+  ¿Ya tienes una cuenta? <Link to="/Login">Inicia aquí</Link>
+</p>
+
 
           <form onSubmit={manejarRegistro}>
             <label>Tipo de persona</label>
@@ -118,7 +152,7 @@ const { data, error: errorSupabase } = await supabase.auth.signUp({
               required
             />
 
-            <div style={{ marginBottom: '10px' }}>
+            <div style={{ marginBottom: '0px' }}>
               <input
                 type="checkbox"
                 id="mostrarPassword"

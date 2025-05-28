@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from './supabaseClient';
+import { supabase } from "../../supabaseClient";
+
 import './Login.css';
 
 const Login = () => {
