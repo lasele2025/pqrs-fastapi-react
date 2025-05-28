@@ -151,7 +151,7 @@ const RegistroPQRS = () => {
         <h1>Registrar nueva PQRS</h1>
         <p>Para la creación de tu caso por favor detalla en este espacio tu requerimiento lo más completo posible.</p>
 
-        <button className="estado-btn">Consulte el estado de su solicitud</button>
+
 
         <h3>Datos de PQRS</h3>
 
