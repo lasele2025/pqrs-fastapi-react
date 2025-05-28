@@ -24,7 +24,7 @@ export default function Dashboard() {
           <p>Ayuda</p>
         </Link>
         <Link to="/Login" className="dashboard-card">
-          <img src="/public/cerrar-sesion.png" alt="Cerrar sesión" />
+          <img src="/cerrar-sesion.png" alt="Cerrar sesión" />
           <p>Cerrar sesión</p>
         </Link>
       </div>
