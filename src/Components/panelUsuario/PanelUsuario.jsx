@@ -19,10 +19,7 @@ export default function Dashboard() {
           <img src="/consultante.png" alt="Consulta de Estado PQRS" />
           <p>Consulta de estado</p>
         </Link>
-        <Link to="/ayuda" className="dashboard-card">
-          <img src="/ayuda.png" alt="Ayuda" />
-          <p>Ayuda</p>
-        </Link>
+
         <Link to="/Login" className="dashboard-card">
           <img src="/cerrar-sesion.png" alt="Cerrar sesión" />
           <p>Cerrar sesión</p>
