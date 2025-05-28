@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './PanelUsuario.css';
 
 export default function Dashboard() {
-  const username = "Royer";
+  const username = "Usuario";
 
   return (
     <div className="panelusuario">
