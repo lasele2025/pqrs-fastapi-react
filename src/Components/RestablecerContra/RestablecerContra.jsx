@@ -47,9 +47,7 @@ export default function RestablecerContrasena() {
 
     {mensaje && <p className="mensaje">{mensaje}</p>}
 
-    <p className="registro">
-      ¿No tienes cuenta? <a href="https://pqrs-fastapi-react.vercel.app/CrearUsuario">Regístrate</a>
-    </p>
+
     <p className="inicio">
       ¿Ya tienes cuenta? <a href="https://pqrs-fastapi-react.vercel.app/">Inicia sesion</a>
     </p>
