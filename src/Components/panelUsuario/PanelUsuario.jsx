@@ -12,15 +12,15 @@ export default function Dashboard() {
       </header>
       <div className="dashboard-grid">
         <Link to="/RegistroPQRS" className="dashboard-card">
-          <img src="/public/crear.png" alt="Crear PQRS" />
+          <img src="/crear.png" alt="Crear PQRS" />
           <p>Crear PQRS</p>
         </Link>
         <Link to="/PqrsUsuario" className="dashboard-card">
-          <img src="/public/consultante.png" alt="Consulta de Estado PQRS" />
+          <img src="/consultante.png" alt="Consulta de Estado PQRS" />
           <p>Consulta de estado</p>
         </Link>
         <Link to="/ayuda" className="dashboard-card">
-          <img src="/public/ayuda.png" alt="Ayuda" />
+          <img src="/ayuda.png" alt="Ayuda" />
           <p>Ayuda</p>
         </Link>
         <Link to="/Login" className="dashboard-card">
