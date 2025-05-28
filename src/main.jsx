@@ -5,7 +5,7 @@ import Login from './Components/Login/Login.jsx';
 import PanelUsuario from './Components/panelUsuario/PanelUsuario.jsx';
 import PanelAdmin from './Components/panelAdmin/PanelAdmin.jsx';
 import RegistroPQRS from './Components/RegistroPQRS/RegistroPQRS.jsx';
-import CrearUsuario from './Components/crearUsuario/CrearUsuario.jsx';
+import CrearUsuario from './Components/CrearUsuario/CrearUsuario.jsx';
 import ConsultarPQRS from './Components/ConsultarPQRS/ConsultarPQRS.jsx';
 import PqrsPendiente from './Components/pqrsPendiente/PqrsPendiente.jsx';
 import PqrsAtendidas from './Components/pqrsAtendidas/PqrsAtendidas.jsx';
