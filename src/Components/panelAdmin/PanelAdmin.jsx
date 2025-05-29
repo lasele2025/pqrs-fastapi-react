@@ -24,10 +24,7 @@ export default function Dashboard() {
             <img src="/usuario.png" alt="Usuarios" />
             <p>Usuarios Registrados</p>
           </Link>
-          <Link to="/Usuarios" className="dashboard-card">
-            <img src="/ayuda.png" alt="Ayuda" />
-            <p>Ayuda</p>
-          </Link>
+
           <Link to="/Login" className="dashboard-card">
             <img src="/cerrar-sesion.png" alt="Cerrar sesión" />
             <p>Cerrar sesión</p>
